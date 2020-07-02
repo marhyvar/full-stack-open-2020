@@ -15,7 +15,13 @@ const App = () => {
     const nameObject = {
       name: newName
     }
-    setPersons(persons.concat(nameObject))
+
+    if (persons.find(({name}) => 
+      name === newName)) {
+        alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(nameObject))
+    }
     setNewName('')
   }
 
@@ -41,7 +47,7 @@ const App = () => {
         <div>
           {persons.map(person =>
             <Person key={person.name} person={person} />
-            )}
+          )}
         </div>
     </div>
   )
