@@ -1,10 +1,9 @@
 // lähteenä käytetty https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 import React, { useState } from 'react'
-
-const Person = ({person}) => (
-  <p>{person.name} {person.number}</p>
-)
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -29,7 +28,9 @@ const App = () => {
       name === newName)) {
         alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
+      const newArray = persons.concat(personObject)
+      setPersons(newArray)
+      setFound(newArray)
     }
     setNewName('')
     setNewNumber('')
@@ -54,36 +55,20 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-          Filter shown with: <input 
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </div>
+      <Filter 
+        search={search}
+        handleSearchChange={handleSearchChange}
+      />
       <h2>Add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          number: <input 
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-        <div>
-          {found.map(person =>
-            <Person key={person.name} person={person} />
-          )}
-        </div>
+      <Persons found={found} />
     </div>
   )
 
