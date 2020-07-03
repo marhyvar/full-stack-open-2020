@@ -1,15 +1,19 @@
 import React from 'react'
 import CountryInfo from './CountryInfo'
 
-const Country = ({country}) => {
+const Country = ({country, handleButtonClick}) => {
     return (
         <div>
-          <p>{country.name}</p>
+          <p>
+              {country.name}
+              <button value={country.name} onClick={handleButtonClick}>show</button>
+          </p>
+          
         </div>
     )
 }
 
-const Countries = ({filteredCountries}) => {
+const Countries = ({filteredCountries, handleButtonClick}) => {
     if (filteredCountries.length > 10) {
         return (
             <div>
@@ -20,7 +24,11 @@ const Countries = ({filteredCountries}) => {
         return (
             <div>
                 {filteredCountries.map(country => 
-                    <Country key={country.name} country={country}/>)}
+                    <Country
+                        key={country.name}
+                        country={country}
+                        handleButtonClick={handleButtonClick}
+                    />)}
             </div>
         )
     } else {

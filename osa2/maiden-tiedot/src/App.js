@@ -18,12 +18,20 @@ const App = () => {
     })
   }, [])
 
+  const filterCountries = (input) => (
+    countries.filter(({name}) =>
+      name.toLowerCase().indexOf(input.toLowerCase()) !== -1)
+  )
+
   const handleSearchChange = (event) => {
     const input = event.target.value
     setSearch(input)
-    const result = countries.filter(({name}) =>
-      name.toLowerCase().indexOf(input.toLowerCase()) !== -1)
-    setFilteredCountries(result)
+    setFilteredCountries(filterCountries(input))
+  }
+
+  const handleButtonClick = (event) => {
+    const countryName = event.target.value
+    setFilteredCountries(filterCountries(countryName))
   }
 
   return (
@@ -32,7 +40,10 @@ const App = () => {
         search={search} 
         handleSearchChange={handleSearchChange}
       />
-      <Countries filteredCountries={filteredCountries} />
+      <Countries
+        filteredCountries={filteredCountries} 
+        handleButtonClick={handleButtonClick}
+      />
     </div>
   )
 }
