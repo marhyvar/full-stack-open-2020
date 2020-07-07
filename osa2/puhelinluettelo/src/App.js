@@ -29,10 +29,22 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-
-    if (persons.find(({name}) => 
-      name === newName)) {
-        alert(`${newName} is already added to phonebook`)
+    const person = persons.find(({name}) => 
+    name === newName)
+    if (person) {
+      const id = person.id
+      const personToUpdate = {...person, number: newNumber}
+      if (window.confirm(`${newName} is already added to phonebook, 
+      replace the old number with new one?`)) {
+        personService
+          .update(id, personToUpdate)
+          .then(returnedPerson => {
+            const newArray = persons.map(person => 
+              person.id !== id ? person: returnedPerson)
+            setPersons(newArray)
+            setFound(newArray)
+          })
+      }
     } else {
       personService
         .create(personObject)
@@ -76,7 +88,6 @@ const App = () => {
           console.log(error)
         })
     }
-
   }
 
   return (
