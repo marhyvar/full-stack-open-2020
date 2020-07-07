@@ -62,6 +62,23 @@ const App = () => {
     setFound(result)
   }
 
+  const handleDeletePerson = (event) => {
+    const result = persons.find(({name}) => name === event.target.value)
+    const id = result.id
+    if (window.confirm(`Delete ${result.name}?`)) {
+      personService.deletePerson(id)
+        .then(() => {
+          const newArray = persons.filter(person => person.id !== id)
+          setPersons(newArray)
+          setFound(newArray)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -78,7 +95,10 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons found={found} />
+      <Persons
+        found={found} 
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   )
 
