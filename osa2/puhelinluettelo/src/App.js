@@ -6,6 +6,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,6 +14,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setNewSearch ] = useState('')
   const [ found, setFound] = useState(persons)
+  const [ message, setMessage ] = useState(null)
 
   useEffect(() => {
     personService
@@ -43,6 +45,10 @@ const App = () => {
               person.id !== id ? person: returnedPerson)
             setPersons(newArray)
             setFound(newArray)
+            setMessage(`${returnedPerson.name}'s number updated`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 4000)
           })
       }
     } else {
@@ -52,6 +58,10 @@ const App = () => {
           const newArray = persons.concat(returnedPerson)
           setPersons(newArray)
           setFound(newArray)
+          setMessage(`${returnedPerson.name} added to phonebook`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)         
         })
     }
     setNewName('')
@@ -83,6 +93,10 @@ const App = () => {
           const newArray = persons.filter(person => person.id !== id)
           setPersons(newArray)
           setFound(newArray)
+          setMessage(`${result.name} deleted from phonebook`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)
         })
         .catch(error => {
           console.log(error)
@@ -93,6 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter 
         search={search}
         handleSearchChange={handleSearchChange}
