@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,14 +14,15 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setNewSearch ] = useState('')
   const [ found, setFound] = useState(persons)
+  const [ message, setMessage ] = useState(null)
+  const [ error, setError ] = useState(false)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('Persons', response.data)
-        setPersons(response.data)
-        setFound(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+        setFound(initialPersons)
       })
   }, [])
 
@@ -30,14 +32,49 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-
-    if (persons.find(({name}) => 
-      name === newName)) {
-        alert(`${newName} is already added to phonebook`)
+    const person = persons.find(({name}) => 
+    name === newName)
+    if (person) {
+      const id = person.id
+      const personToUpdate = {...person, number: newNumber}
+      if (window.confirm(`${newName} is already added to phonebook, 
+      replace the old number with new one?`)) {
+        personService
+          .update(id, personToUpdate)
+          .then(returnedPerson => {
+            const newArray = persons.map(person => 
+              person.id !== id ? person: returnedPerson)
+            setPersons(newArray)
+            setFound(newArray)
+            setMessage(`Number of ${returnedPerson.name} has been updated`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 4000)
+          })
+          .catch(error => {
+            setError(true)
+            setMessage(`Information of ${newName} has already been removed`)
+            setTimeout(() => {
+              setError(false)
+              setMessage(null)
+            }, 4000)
+            const newArray = persons.filter(person => person.id !== id)
+            setPersons(newArray)
+            setFound(newArray)
+          })
+      }
     } else {
-      const newArray = persons.concat(personObject)
-      setPersons(newArray)
-      setFound(newArray)
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          const newArray = persons.concat(returnedPerson)
+          setPersons(newArray)
+          setFound(newArray)
+          setMessage(`${returnedPerson.name} added to phonebook`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)         
+        })
     }
     setNewName('')
     setNewNumber('')
@@ -59,9 +96,33 @@ const App = () => {
     setFound(result)
   }
 
+  const handleDeletePerson = (event) => {
+    const result = persons.find(({name}) => name === event.target.value)
+    const id = result.id
+    if (window.confirm(`Delete ${result.name}?`)) {
+      personService.deletePerson(id)
+        .then(() => {
+          const newArray = persons.filter(person => person.id !== id)
+          setPersons(newArray)
+          setFound(newArray)
+          setMessage(`${result.name} deleted from phonebook`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={message} 
+        error={error}  
+      />
       <Filter 
         search={search}
         handleSearchChange={handleSearchChange}
@@ -75,7 +136,10 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons found={found} />
+      <Persons
+        found={found} 
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   )
 
