@@ -15,6 +15,7 @@ const App = () => {
   const [ search, setNewSearch ] = useState('')
   const [ found, setFound] = useState(persons)
   const [ message, setMessage ] = useState(null)
+  const [ error, setError ] = useState(false)
 
   useEffect(() => {
     personService
@@ -45,10 +46,21 @@ const App = () => {
               person.id !== id ? person: returnedPerson)
             setPersons(newArray)
             setFound(newArray)
-            setMessage(`${returnedPerson.name}'s number updated`)
+            setMessage(`Number of ${returnedPerson.name} has been updated`)
             setTimeout(() => {
               setMessage(null)
             }, 4000)
+          })
+          .catch(error => {
+            setError(true)
+            setMessage(`Information of ${newName} has already been removed`)
+            setTimeout(() => {
+              setError(false)
+              setMessage(null)
+            }, 4000)
+            const newArray = persons.filter(person => person.id !== id)
+            setPersons(newArray)
+            setFound(newArray)
           })
       }
     } else {
@@ -107,7 +119,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification
+        message={message} 
+        error={error}  
+      />
       <Filter 
         search={search}
         handleSearchChange={handleSearchChange}
