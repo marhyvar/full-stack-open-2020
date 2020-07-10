@@ -1,6 +1,8 @@
 import React from 'react'
+import Weather from './Weather'
 
-const CountryInfo = ({filteredCountries}) => {
+const CountryInfo = ({filteredCountries, weather, setWeather}) => {
+
     const languages = () => filteredCountries[0].languages.map(language =>
         <li key={language.name}>{language.name}</li>)
     const country = () => filteredCountries.map(country =>
@@ -13,6 +15,11 @@ const CountryInfo = ({filteredCountries}) => {
                 {languages()}
             </ul>
             <img src={ country.flag } alt='flag' height='100px'/> 
+            <Weather 
+                weather={weather}
+                setWeather={setWeather}
+                capitalName={country.capital}
+            />
         </div>
     )
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import CountryInfo from './CountryInfo'
 
 const Country = ({country, handleButtonClick}) => {
     return (
@@ -20,7 +19,7 @@ const Countries = ({filteredCountries, handleButtonClick}) => {
                 <p>Too many matches, specify another filter</p>
             </div>
         )
-    } else if (filteredCountries.length > 1) {
+    } else  {
         return (
             <div>
                 {filteredCountries.map(country => 
@@ -29,12 +28,6 @@ const Countries = ({filteredCountries, handleButtonClick}) => {
                         country={country}
                         handleButtonClick={handleButtonClick}
                     />)}
-            </div>
-        )
-    } else {
-        return (
-            <div>
-                <CountryInfo filteredCountries={filteredCountries}/>
             </div>
         )
     }

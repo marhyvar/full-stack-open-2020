@@ -3,13 +3,16 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import Filter from './components/Filter'
 import Countries from './components/Countries'
+import CountryInfo from './components/CountryInfo'
+
 
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
   const [ filteredCountries, setFilteredCountries ] = useState([])
   const [ search, setSearch ] = useState('')
-
+  const [ weather, setWeather ] = useState(null)
+ 
   useEffect(() => {
     axios
     .get('https://restcountries.eu/rest/v2/all')
@@ -40,10 +43,19 @@ const App = () => {
         search={search} 
         handleSearchChange={handleSearchChange}
       />
-      <Countries
+      {(filteredCountries.length === 1) ? (
+        <CountryInfo
+          filteredCountries={filteredCountries}
+          weather={weather}
+          setWeather={setWeather}
+        />
+      ) : (
+        <Countries
         filteredCountries={filteredCountries} 
         handleButtonClick={handleButtonClick}
       />
+      )}
+      
     </div>
   )
 }
