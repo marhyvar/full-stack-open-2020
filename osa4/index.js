@@ -1,8 +1,9 @@
-require('dotenv').config()
+const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const logger = require('./utils/logger')
 
 const blogSchema = mongoose.Schema({
   title: String,
@@ -21,14 +22,14 @@ blogSchema.set('toJSON', {
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-// eslint-disable-next-line no-undef
-const mongoUrl = process.env.MONGODB_URI
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   // eslint-disable-next-line no-unused-vars
-  .then(result =>
-  {    console.log('connected to MongoDB')  })
-  .catch((error) =>
-  {    console.log('error connecting to MongoDB:', error.message)  })
+  .then(result => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.error('error connecting to MongoDB:', error.message)
+  })
 
 app.use(cors())
 app.use(express.json())
@@ -51,8 +52,7 @@ app.post('/api/blogs', (request, response) => {
     })
 })
 
-// eslint-disable-next-line no-undef
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
