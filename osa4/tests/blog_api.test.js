@@ -52,6 +52,21 @@ test('blogs can be added', async () => {
   )
 })
 
+test('if the likes of a blog has no value it is set to zero', async () => {
+  const newBlog = {
+    title: 'React v16.8: The One With Hooks',
+    author: 'Dan Abramov',
+    url: 'https://reactjs.org/blog/2019/02/06/react-v16.8.0.html'
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+
+  const blogsAfterAdding = await helper.blogsInDb()
+  const likes = blogsAfterAdding[helper.initialBlogs.length].likes
+  expect(likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
