@@ -67,6 +67,19 @@ test('if the likes of a blog has no value it is set to zero', async () => {
   expect(likes).toBe(0)
 })
 
+test('blog without title and url cannot be added to list', async () => {
+  const newBlog = {
+    author: 'Dan Abramov'
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAfterAdding = await helper.blogsInDb()
+  expect(blogsAfterAdding).toHaveLength(helper.initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
