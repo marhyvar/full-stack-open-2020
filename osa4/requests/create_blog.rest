@@ -1,0 +1,10 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjVmMzM5NDI4NjEzYjMyM2NhMGU4YzIzNiIsImlhdCI6MTU5ODQ0MDM0NH0.oHV8TJ7WiPkEkk9bJsDcNzyiTAQR7xJhB-xfbxj0wBM
+
+{
+  "title": "React Update",
+  "author": "Dan Abramov",
+  "url": "https://reactjs.org/blog/2019/08/08/react-v16.9.0.html",
+  "likes": 10
+}
