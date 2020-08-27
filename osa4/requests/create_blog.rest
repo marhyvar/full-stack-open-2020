@@ -1,0 +1,10 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaWQiOiI1ZjMzOTQ5ZGI0OGFmMTU0MzBlZDEwYzIiLCJpYXQiOjE1OTg0NDIyMjF9.1J_MK9oRMEn5MCApUTsHZIM7RQyqFYQcZe6IxUge6zU
+
+{
+  "title": "Learning",
+  "author": "Test Author",
+  "url": "https://reactjs.org/blog/2019/08/08/react-v16.9.0.html",
+  "likes": 1
+}
