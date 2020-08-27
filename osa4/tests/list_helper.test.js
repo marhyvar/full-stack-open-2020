@@ -61,7 +61,7 @@ const biggerList = [
   },
   {
     title: 'React v16.9.0 and the Roadmap Update',
-    author: 'Dan Abramov and Brian Vaughn',
+    author: 'Dan Abramov',
     url: 'https://reactjs.org/blog/2019/08/08/react-v16.9.0.html',
     likes: 3,
     id: '5f1d7aaece57cc31088ea5f6'
@@ -139,5 +139,54 @@ describe('favorite blog', () => {
     }
     testFavorite(listWithSimilarLikes, favorite)
   })
+})
 
+describe('most blogs', () => {
+
+  const testMostBlogs = (array, expectedResult) => {
+    expect(listHelper.mostBlogs(array)).toEqual(expectedResult)
+  }
+
+  test('of an empty list returns zero', () => {
+    expect(listHelper.mostBlogs(emptyList)).toEqual(0)
+  })
+
+  test('of a list with one blog returns that', () => {
+    testMostBlogs(listWithOneBlog, {
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+
+  test('of a bigger list returs the one with most blogs', () => {
+    testMostBlogs(biggerList, {
+      author: 'Dan Abramov',
+      blogs: 2
+    })
+  })
+})
+
+describe('most likes', () => {
+
+  const testMostLikes = (array, expectedResult) => {
+    expect(listHelper.mostLikes(array)).toEqual(expectedResult)
+  }
+
+  test('of an empty list returns zero', () => {
+    expect(listHelper.mostLikes(emptyList)).toEqual(0)
+  })
+
+  test('of a list with one blog returns that', () => {
+    testMostLikes(listWithOneBlog, {
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+  })
+
+  test('of a bigger list returns the one with most likes', () => {
+    testMostLikes(biggerList, {
+      author: 'Dan Abramov',
+      likes: 13
+    })
+  })
 })
