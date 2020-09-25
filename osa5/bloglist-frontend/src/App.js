@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +14,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -46,7 +49,12 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('wrong credentials')
+      setError(true)
+      setMessage('wrong username or password')
+      setTimeout(() => {
+        setError(false)
+        setMessage(null)
+      }, 4000)
     }
   }
 
@@ -70,6 +78,10 @@ const App = () => {
         setTitle('')
         setAuthor('')
         setUrl('')
+        setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       })
   }
 
@@ -77,6 +89,10 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification
+        message={ message } 
+        error={ error }  
+        />
         <LoginForm
           username={ username }
           setUsername={ setUsername }
@@ -91,9 +107,14 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{ user.name } logged in</p>
-      <button onClick={ handleLogout }>logout</button>
-      
+      <Notification
+        message={message} 
+        error={error}  
+      />
+      <p>
+        { user.name } logged in <button onClick={ handleLogout }>logout</button>
+      </p>
+           
       <BlogForm
         title={ title }
         setTitle={ setTitle }
