@@ -1,9 +1,19 @@
 import React, { useState } from 'react'
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showAll, setShowAll] = useState(false)
 
   const hideWhenVisible = { display: showAll ? 'none' : ''}
   const showWhenVisible = { display: showAll ? '' : 'none'} 
+
+  const handleUpdate = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      ...blog,
+      likes: blog.likes +1,
+      user: blog.user === undefined ? undefined : blog.user.id
+    }
+    updateBlog(blogObject)
+  }
 
   const blogStyle = {
     padding: 5,
@@ -30,7 +40,7 @@ const Blog = ({ blog }) => {
         <div style={blogStyle2}>
           <p>{blog.title} {blog.author} <button onClick={() => setShowAll(false)}>hide</button></p>
           <p>{blog.url}</p>
-          <p>likes {blog.likes}<button>like</button></p>
+          <p>likes {blog.likes}<button onClick={handleUpdate}>like</button></p>
           { blog.user === undefined ? <p>anonymous</p> : <p>{ blog.user.username}</p>}
         </div>
       </div>

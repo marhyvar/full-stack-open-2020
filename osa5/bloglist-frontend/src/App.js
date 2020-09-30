@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import BlogList from './components/BlogList'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -76,6 +76,17 @@ const App = () => {
       })
   }
 
+  const updateBlog = (blogObject) => {
+    blogService
+      .update(blogObject)
+      .then(updatedBlog => {
+        console.log('vanha', blogObject.id)
+        console.log('uusi', updatedBlog.id)
+        setBlogs(blogs.filter(b => b.id !== blogObject.id).concat(updatedBlog)) 
+      })
+      .catch(error => console.log(error))
+  }
+
   if (user === null) {
     return (
       <div>
@@ -110,9 +121,10 @@ const App = () => {
           createBlog={ addBlog }
         />
       </Togglable>
-       {blogs.map(blog =>
-        <Blog key={ blog.id } blog={ blog } />
-      )}
+        <BlogList 
+          blogs={ blogs }
+          updateBlog={updateBlog}
+        />
     </div>
   )
 }
