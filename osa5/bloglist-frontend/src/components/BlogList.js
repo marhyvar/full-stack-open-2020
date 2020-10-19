@@ -1,7 +1,7 @@
 import React from 'react'
 import Blog from './Blog'
 
-const BlogList = ({ blogs, updateBlog }) => {
+const BlogList = ({ blogs, updateBlog, user, removeBlog }) => {
 
   return (
       <div>
@@ -10,6 +10,8 @@ const BlogList = ({ blogs, updateBlog }) => {
               key={ blog.id }
               blog={ blog }
               updateBlog={updateBlog}
+              user={ user }
+              removeBlog={ removeBlog }
               />
         )}
       </div>

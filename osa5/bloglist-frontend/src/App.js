@@ -67,9 +67,10 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
+        returnedBlog.adder = user.name
         setBlogs(blogs.concat(returnedBlog))
         
-        setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author}`)
         setTimeout(() => {
           setMessage(null)
         }, 4000)
@@ -80,11 +81,26 @@ const App = () => {
     blogService
       .update(blogObject)
       .then(updatedBlog => {
+        updatedBlog.adder = blogObject.adder
+        console.log('adder', updatedBlog.adder)
         setBlogs(blogs.filter(b => b.id !== blogObject.id)
           .concat(updatedBlog)
           .sort((a, b) => b.likes - a.likes)
         ) 
       })
+      .catch(error => console.log(error))
+  }
+
+  const removeBlog = (blogObject) => {
+    blogService
+      .remove(blogObject)
+      .then(() => {
+        setBlogs(blogs.filter(b => b.id !== blogObject.id))
+        setMessage(`blog ${blogObject.title} by ${blogObject.author} was deleted`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
+      })        
       .catch(error => console.log(error))
   }
 
@@ -124,7 +140,9 @@ const App = () => {
       </Togglable>
         <BlogList 
           blogs={ blogs }
-          updateBlog={updateBlog}
+          updateBlog={ updateBlog }
+          user={ user }
+          removeBlog={ removeBlog }
         />
     </div>
   )
