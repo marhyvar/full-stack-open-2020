@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   const [showAll, setShowAll] = useState(false)
+  // eslint-disable-next-line no-unused-vars
   const [adder, setAdder] = useState(blog.user.name)
 
-  const hideWhenVisible = { display: showAll ? 'none' : ''}
-  const showWhenVisible = { display: showAll ? '' : 'none'} 
+  const hideWhenVisible = { display: showAll ? 'none' : '' }
+  const showWhenVisible = { display: showAll ? '' : 'none' }
 
-  const handleUpdate = (event) => {
+  const handleUpdate = () => {
     const blogObject = {
       ...blog,
       likes: blog.likes +1,
@@ -17,7 +18,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   }
 
   const handleRemove = () => {
-    if (window.confirm(`remove blog ${blog.title}?`)) { 
+    if (window.confirm(`remove blog ${blog.title}?`)) {
       removeBlog(blog)
     }
   }
@@ -37,7 +38,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
 
   const removeButtonStyle = {
     color: 'white',
-    background: 'red', 
+    background: 'red',
     padding: 5,
     display: 'block'
   }
@@ -56,9 +57,9 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
           <p>{blog.url}</p>
           <p>likes {blog.likes}<button onClick={handleUpdate}>like</button></p>
 
-            <p>{ blog.user.name || blog.adder }</p>
-            { blog.user.username === user.username || blog.adder === user.name ? <button style={removeButtonStyle} onClick=
-              {handleRemove}>remove</button> : <br></br>}                  
+          <p>{ blog.user.name || blog.adder }</p>
+          { blog.user.username === user.username || blog.adder === user.name ? <button style={removeButtonStyle} onClick=
+            {handleRemove}>remove</button> : <br></br>}
         </div>
       </div>
     </>

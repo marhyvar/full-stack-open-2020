@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const App = () => {
       window.localStorage.setItem(
         'loggedInBlogUser', JSON.stringify(user)
       )
-      
+
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -69,7 +69,7 @@ const App = () => {
       .then(returnedBlog => {
         returnedBlog.adder = user.name
         setBlogs(blogs.concat(returnedBlog))
-        
+
         setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author}`)
         setTimeout(() => {
           setMessage(null)
@@ -86,7 +86,7 @@ const App = () => {
         setBlogs(blogs.filter(b => b.id !== blogObject.id)
           .concat(updatedBlog)
           .sort((a, b) => b.likes - a.likes)
-        ) 
+        )
       })
       .catch(error => console.log(error))
   }
@@ -100,7 +100,7 @@ const App = () => {
         setTimeout(() => {
           setMessage(null)
         }, 4000)
-      })        
+      })
       .catch(error => console.log(error))
   }
 
@@ -109,8 +109,8 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
         <Notification
-        message={ message } 
-        error={ error }  
+          message={ message }
+          error={ error }
         />
         <LoginForm
           username={ username }
@@ -127,23 +127,23 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification
-        message={message} 
-        error={error}  
+        message={message}
+        error={error}
       />
       <p>
         { user.name } logged in <button onClick={ handleLogout }>logout</button>
       </p>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>     
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm
           createBlog={ addBlog }
         />
       </Togglable>
-        <BlogList 
-          blogs={ blogs }
-          updateBlog={ updateBlog }
-          user={ user }
-          removeBlog={ removeBlog }
-        />
+      <BlogList
+        blogs={ blogs }
+        updateBlog={ updateBlog }
+        user={ user }
+        removeBlog={ removeBlog }
+      />
     </div>
   )
 }
