@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   const [showAll, setShowAll] = useState(false)
   // eslint-disable-next-line no-unused-vars
-  const [adder, setAdder] = useState(blog.user.name)
+  const [adder, setAdder] = useState(blog.user.name || '')
 
   const hideWhenVisible = { display: showAll ? 'none' : '' }
   const showWhenVisible = { display: showAll ? '' : 'none' }
