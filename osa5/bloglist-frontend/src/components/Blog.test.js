@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
@@ -48,6 +48,28 @@ describe('<Blog />', () => {
       'https://fullstackopen.com/osa5/react_sovellusten_testaaminen'
     )
     expect(div).toHaveTextContent(
+      10
+    )
+  })
+
+  test('after clicking the button, full info is shown', () => {
+    const div1 = component.container.querySelector('.lessInfo')
+    const div2 = component.container.querySelector('.moreInfo')
+    const button = component.getByText('view')
+
+    fireEvent.click(button)
+    expect(div1).toHaveStyle('display: none')
+    expect(div2).not.toHaveStyle('display: none')
+    expect(div2).toHaveTextContent(
+      'Testing React applications'
+    )
+    expect(div2).toHaveTextContent(
+      'Matti Luukkainen'
+    )
+    expect(div2).toHaveTextContent(
+      'https://fullstackopen.com/osa5/react_sovellusten_testaaminen'
+    )
+    expect(div2).toHaveTextContent(
       10
     )
   })
