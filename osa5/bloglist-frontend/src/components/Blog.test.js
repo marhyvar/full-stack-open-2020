@@ -22,9 +22,15 @@ describe('<Blog />', () => {
     username: 'admin'
   }
 
+  const updateBlog = jest.fn()
+
   beforeEach(() => {
     component = render(
-      <Blog blog={blog} user={user} />
+      <Blog
+        blog={blog}
+        user={user}
+        updateBlog={updateBlog}
+      />
     )
   })
 
@@ -72,6 +78,17 @@ describe('<Blog />', () => {
     expect(div2).toHaveTextContent(
       10
     )
+  })
+
+  test('after clicking likes-button twice, event handler function is called twice', () => {
+    const button1 = component.getByText('view')
+    const button2 = component.getByText('like')
+
+    fireEvent.click(button1)
+    fireEvent.click(button2)
+    fireEvent.click(button2)
+
+    expect(updateBlog.mock.calls).toHaveLength(2)
   })
 
 })
