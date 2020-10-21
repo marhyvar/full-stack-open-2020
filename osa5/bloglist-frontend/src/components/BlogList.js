@@ -4,7 +4,7 @@ import Blog from './Blog'
 const BlogList = ({ blogs, updateBlog, user, removeBlog }) => {
 
   return (
-    <div>
+    <div className='blog-list'>
       {blogs.map(blog =>
         <Blog
           key={ blog.id }

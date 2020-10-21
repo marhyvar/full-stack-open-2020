@@ -17,7 +17,7 @@ describe('Blog app', function() {
     cy.get('button').contains('login')
   })
 
-  describe('Login',function() {
+  describe('Login', function() {
     it('succeeds with correct credentials', function() {
       cy.get('#username').type('doggo')
       cy.get('#password').type('bones')
@@ -35,6 +35,22 @@ describe('Blog app', function() {
         .and('have.css', 'background-color', 'rgb(255, 0, 0)')
 
       cy.get('html').should('not.contain', 'Mr. Dog logged in')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'doggo', password: 'bones' })
+    })
+
+    it('A blog can be created', function() {
+      cy.get('#toggle').click()
+      cy.get('#title').type('Introduction to Cypress')
+      cy.get('#author').type('Cypress team')
+      cy.get('#url').type('https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html#Default-Values')
+      cy.get('button').contains('create').click()
+
+      cy.get('.blog-list').contains('Introduction to Cypress')
     })
   })
 })
