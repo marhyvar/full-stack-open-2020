@@ -95,22 +95,55 @@ describe('Blog app', function() {
         .contains('remove').should('not.exist')
     })
 
-    describe('and a blog exists', function () {
+    describe('and blogs exists', function () {
       beforeEach(function () {
         cy.createBlog({
           title: 'The Go blog',
           author: 'Gophers',
           url: 'https://blog.golang.org/'
         })
+        cy.createBlog({
+          title: 'Go 1.15 is released',
+          author: 'Alex Rakoczy',
+          url: 'https://blog.golang.org/go1.15'
+        })
+        cy.createBlog({
+          title: 'Pkg.go.dev is open source!',
+          author: 'Julie Qiu',
+          url: 'https://blog.golang.org/pkgsite'
+        })
       })
 
-      it('it can be liked', function () {
+      it('blog can be liked', function () {
         cy.contains('The Go blog Gophers').contains('view').click()
 
-        cy.contains('like')
-          .click()
+        cy.get('button').contains('like').click()
 
         cy.get('.moreInfo').contains('The Go blog Gophers').parent().contains('likes 1')
+      })
+
+      it('blogs are arranged according to likes', function () {
+        cy.contains('Pkg.go.dev is open source!').contains('view').click()
+        cy.get('.moreInfo').contains('Pkg.go.dev is open source!')
+          .parent().find('.like-button').as('button1')
+        cy.get('@button1').click()
+        cy.get('@button1').click()
+
+        cy.contains('Go 1.15 is released').contains('view').click()
+        cy.get('.moreInfo').contains('Go 1.15 is released')
+          .parent().find('.like-button').as('button2')
+        cy.get('@button2').click()
+
+        cy.get('.likes').then(elems => {
+          // https://stackoverflow.com/questions/52950149/cypressts-get-text-from-htmlelement
+          const texts = [...elems].map(el => el.textContent.trim())
+
+          expect(texts).to.deep.eq([
+            'likes 2',
+            'likes 1',
+            'likes 0'
+          ])
+        })
       })
     })
   })

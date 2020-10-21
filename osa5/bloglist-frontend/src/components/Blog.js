@@ -55,7 +55,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
         <div style={blogStyle2}>
           <p>{blog.title} {blog.author} <button onClick={() => setShowAll(false)}>hide</button></p>
           <p>{blog.url}</p>
-          <p>likes {blog.likes}<button onClick={handleUpdate}>like</button></p>
+          <p className='likes'>likes {blog.likes}</p><button className='like-button' onClick={handleUpdate}>like</button>
 
           <p>{ blog.user.name || blog.adder }</p>
           { blog.user.username === user.username || blog.adder === user.name ? <button style={removeButtonStyle} onClick=
