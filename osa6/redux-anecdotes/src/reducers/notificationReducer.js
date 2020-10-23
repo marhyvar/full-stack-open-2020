@@ -1,4 +1,7 @@
-const notificationReducer = (state = 'This is a notification', action) => {
+const initialNofication = 'You can vote for your favorite anecdotes \
+or add new anecdotes to the list!'
+
+const notificationReducer = (state = initialNofication, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.notification
