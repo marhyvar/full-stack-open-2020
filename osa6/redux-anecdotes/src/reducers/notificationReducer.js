@@ -31,12 +31,14 @@ export const clearNotification = () => {
   }
 }
 
+let timeOutId = 0
 export const notifyWithTime = (notification, time) => {
   return async dispatch => {
+    clearTimeout(timeOutId)
     dispatch(notify(notification))
-    setTimeout(() => {
+    timeOutId = setTimeout(() => {
       dispatch(clearNotification())
-    }, time)
+    }, time)    
   }
 }
 
