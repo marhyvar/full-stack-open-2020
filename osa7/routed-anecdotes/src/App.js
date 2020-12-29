@@ -63,9 +63,15 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const content_all = useField('text')
+  const author_all = useField('text')
+  const info_all = useField('text')
+  const array = [content_all, author_all, info_all]
+  // https://stackoverflow.com/questions/56155922/how-to-delete-property-from-spread-operator
+  const arrayTransformed = array.map(({reset, ...rest}) => rest)
+  const content = arrayTransformed[0]
+  const author = arrayTransformed[1]
+  const info = arrayTransformed[2]
   const history = useHistory()
 
   const handleSubmit = (e) => {
@@ -82,9 +88,9 @@ const CreateNew = (props) => {
   }
 
   const resetFields = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    content_all.reset()
+    author_all.reset()
+    info_all.reset()
   }
 
   return (
