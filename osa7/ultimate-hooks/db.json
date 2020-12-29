@@ -1,0 +1,55 @@
+{
+  "notes": [
+    {
+      "content": "custom-hookit aivan mahtavia",
+      "id": 1
+    },
+    {
+      "content": "paras feature ikinä <3",
+      "id": 2
+    },
+    {
+      "content": "töttöröö",
+      "id": 3
+    },
+    {
+      "content": "ou jee",
+      "id": 4
+    },
+    {
+      "content": "woop woop",
+      "id": 5
+    },
+    {
+      "content": "it works",
+      "id": 6
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "Cat",
+      "number": "123",
+      "id": 2
+    },
+    {
+      "name": "Dog",
+      "number": "456",
+      "id": 3
+    },
+    {
+      "name": "Bird",
+      "number": "789",
+      "id": 4
+    },
+    {
+      "name": "Cow",
+      "number": "000",
+      "id": 5
+    }
+  ]
+}
